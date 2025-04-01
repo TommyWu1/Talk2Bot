@@ -30,4 +30,4 @@ Hey there! This is **Talk2Bot**, a project I built during my freetime to showcas
    
 ## 💡 Future Improvements
 -Add voice commands using the browser’s speech API
--Let users place their own obstacles
+<br>-Let users place their own obstacles
