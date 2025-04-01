@@ -1,7 +1,7 @@
 # 🤖 Robot Commander Simulator  
 **Control a virtual robot through a web interface!**  
 
-Hey there! This is "Talk2Bot", a project I built during my freetime to showcase my skills in programming. It lets you control a robot on a grid using text commands, complete with obstacles, battery life, and even a secret Easter egg. Think of it like a mini-game where you’re programming a robot’s movements—but with natural language!  
+Hey there! This is "**Talk2Bot**", a project I built during my freetime to showcase my skills in programming. It lets you control a robot on a grid using text commands, complete with obstacles, battery life, and even a secret Easter egg. Think of it like a mini-game where you’re programming a robot’s movements—but with natural language!  
 
 ---
 
