@@ -22,12 +22,12 @@ Hey there! This is **Talk2Bot**, a project I built during my freetime to showcas
 3. **Use it:** Open http://localhost:5000 in your browser
 4. **Commands:** go to x,y (e.g., go to 1,5). Try reaching (5,5) for the secret celebration!
 
-##🔧 Tech Stack
+## 🔧 Tech Stack
 - **Backend:** Python + Flask (for handling commands)
 - **Frontend:** Vanilla JavaScript + CSS animations
 - **Pathfinding:** A* algorithm (with Manhattan distance)
 - **Style:** Custom CSS with neon effects
    
-##💡 Future Improvements
+## 💡 Future Improvements
 -Add voice commands using the browser’s speech API
 -Let users place their own obstacles
