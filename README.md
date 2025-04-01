@@ -29,5 +29,5 @@ Hey there! This is **Talk2Bot**, a project I built during my freetime to showcas
 - **Style:** Custom CSS with neon effects
    
 ## 💡 Future Improvements
--Add voice commands using the browser’s speech API
-<br>-Let users place their own obstacles
+- Add voice commands using the browser’s speech API
+- Let users place their own obstacles
