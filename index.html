@@ -15,6 +15,7 @@
     <!-- Game Screen -->
     <div id="gameScreen" class="hidden">
         <div class="header">
+            <button onclick="goBackToMenu()" class="neon-button small">← BACK TO MENU</button>
             <h2>ROBOT CONTROL PANEL</h2>
             <div class="battery">🔋 <span id="batteryLevel">100</span>%</div>
         </div>
@@ -30,6 +31,19 @@
                 <div id="status" class="status-message"></div>
             </div>
         </div>
+    </div>
+
+    <!-- Popups -->
+    <div id="lowBatteryPopup" class="hidden popup">
+        <div class="popup-content">
+            <h2>⚠️ CRITICAL BATTERY ⚠️</h2>
+            <p>Robot cannot move anymore!</p>
+            <button onclick="goBackToMenu()" class="neon-button">RETURN TO BASE</button>
+        </div>
+    </div>
+
+    <div id="easterEgg" class="hidden easter-egg">
+        <div class="celebration">🎉 SECRET AREA DISCOVERED! 🎉</div>
     </div>
 
     <script>
@@ -52,6 +66,10 @@
                     
                     if((x === 2 && y === 2) || (x === 3 && y === 3) || (x === 4 && y === 4)) {
                         cell.classList.add('obstacle');
+                    }
+                    
+                    if(x === 5 && y === 5) {
+                        cell.innerHTML = '❓'; // Easter egg hint
                     }
                     
                     grid.appendChild(cell);
@@ -78,18 +96,34 @@
                 });
                 
                 const result = await response.json();
+                
                 document.getElementById('status').innerText = 
                     result.status === 'success' 
                     ? `SUCCESS: Robot moved to (${result.position[0]}, ${result.position[1]})` 
                     : 'ERROR: Command failed';
                 
-                if(result.position) {
+                document.getElementById('status').classList.remove('error');
+                
+                if(result.status === 'success') {
+                    if(result.battery !== undefined) updateBattery(result.battery);
+                    
+                    if(result.easter_egg) {
+                        const egg = document.getElementById('easterEgg');
+                        egg.classList.remove('hidden');
+                        setTimeout(() => egg.classList.add('hidden'), 3000);
+                    }
+                    
+                    if(result.battery <= 0) {
+                        document.getElementById('lowBatteryPopup').classList.remove('hidden');
+                        return;
+                    }
+                    
                     robotPos = result.position;
                     updateGrid(robotPos[0], robotPos[1]);
-                    document.getElementById('batteryLevel').textContent = result.battery;
                 }
             } catch (error) {
                 document.getElementById('status').innerText = 'NETWORK ERROR';
+                document.getElementById('status').classList.add('error');
             } finally {
                 button.disabled = false;
                 button.textContent = 'TRANSMIT';
@@ -100,6 +134,28 @@
             document.getElementById('welcomeScreen').classList.add('hidden');
             document.getElementById('gameScreen').classList.remove('hidden');
             createGrid();
+        }
+
+        function goBackToMenu() {
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('welcomeScreen').classList.remove('hidden');
+            robotPos = [0, 0];
+            battery_level = 100;
+            document.getElementById('batteryLevel').textContent = 100;
+            document.querySelector('.battery').classList.remove('yellow', 'red');
+            createGrid();
+        }
+
+        function updateBattery(level) {
+            const batteryElement = document.getElementById('batteryLevel');
+            batteryElement.textContent = level;
+            
+            batteryElement.parentElement.classList.remove('yellow', 'red');
+            if(level <= 30) {
+                batteryElement.parentElement.classList.add('red');
+            } else if(level <= 60) {
+                batteryElement.parentElement.classList.add('yellow');
+            }
         }
     </script>
 </body>

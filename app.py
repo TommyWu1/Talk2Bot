@@ -3,10 +3,10 @@ from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 
 robot_position = (0, 0)
-goal = (5, 5)
 grid_size = 6
 obstacles = {(2, 2), (3, 3), (4, 4)}
 battery_level = 100
+easter_egg_coord = (5, 5)  # New Easter egg position
 
 class AStarPathfinder:
     def __init__(self, grid_size, obstacles):
@@ -66,12 +66,19 @@ def handle_command():
         if path:
             battery_level -= len(path)
             robot_position = path[-1]
-            return jsonify({
+            
+            response = {
                 "status": "success",
                 "position": robot_position,
                 "path": path,
                 "battery": battery_level
-            })
+            }
+            
+            # Easter egg check
+            if robot_position == easter_egg_coord:
+                response["easter_egg"] = True
+                
+            return jsonify(response)
     
     return jsonify({"status": "error", "message": "Command not understood"})
 
