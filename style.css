@@ -1,0 +1,178 @@
+:root {
+    --primary-color: #00ff9d;
+    --secondary-color: #0066ff;
+    --background: #1a1a2e;
+}
+
+body {
+    background: var(--background);
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* Welcome Screen */
+.welcome-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    animation: fadeIn 1.5s;
+}
+
+.title-animation {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 2.5rem;
+    text-align: center;
+    text-shadow: 0 0 15px var(--primary-color);
+    animation: neonPulse 2s infinite;
+    margin-bottom: 2rem;
+}
+
+/* Game Screen */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(0,0,0,0.5);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.battery {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+.game-container {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    height: 100;
+}
+
+/* Grid & Robot */
+#grid {
+    display: grid;
+    gap: 10px;
+    background: rgba(255,255,255,0.1);
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 20px var(--primary-color);
+}
+
+.cell {
+    width: 60px;
+    height: 60px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+}
+
+.robot {
+    background: url('/static/robot.png') center/cover !important;
+    animation: float 2s infinite;
+}
+
+.obstacle {
+    background: #ff4654 !important;
+    animation: pulseDanger 1.5s infinite;
+}
+
+/* Command Box */
+.command-box {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 15px var(--primary-color);
+    width: 400px;
+}
+
+#commandInput {
+    width: 93.5%;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+#commandInput::placeholder {
+    color: rgba(0, 255, 157, 0.5);
+}
+
+#commandInput:focus {
+    outline: none;
+    border-color: #00ff9d;
+    box-shadow: 0 0 10px #00ff9d;
+}
+
+.glow-button {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary-color);
+    border: none;
+    color: #000;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.glow-button:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px var(--primary-color);
+}
+
+.status-message {
+    margin-top: 1rem;
+    color: var(--primary-color);
+    min-height: 20px;
+}
+
+/* Animations */
+@keyframes neonPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; text-shadow: 0 0 25px var(--primary-color); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes pulseDanger {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.neon-button {
+    background: none;
+    border: 3px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 2rem;
+    border-radius: 5px;
+}
+
+.neon-button:hover {
+    background: var(--primary-color);
+    color: black;
+    box-shadow: 0 0 25px var(--primary-color);
+}
+
+.hidden {
+    display: none !important;
+}

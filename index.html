@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Robot Commander</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Press+Start+2P&display=swap">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div id="welcomeScreen" class="welcome-screen">
+        <h1 class="title-animation">🤖 ROBOT COMMANDER</h1>
+        <button onclick="startGame()" class="neon-button">START MISSION</button>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="gameScreen" class="hidden">
+        <div class="header">
+            <h2>ROBOT CONTROL PANEL</h2>
+            <div class="battery">🔋 <span id="batteryLevel">100</span>%</div>
+        </div>
+        
+        <div class="game-container">
+            <div id="grid"></div>
+            
+            <div class="controls">
+                <div class="command-box">
+                    <input type="text" id="commandInput" placeholder="Enter command (e.g. 'go to 5,5')">
+                    <button onclick="sendCommand()" class="glow-button">TRANSMIT</button>
+                </div>
+                <div id="status" class="status-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let robotPos = [0, 0];
+        
+        function createGrid() {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            grid.style.gridTemplateColumns = 'repeat(6, 60px)';
+            
+            for(let y=0; y<6; y++) {
+                for(let x=0; x<6; x++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.id = `cell-${x}-${y}`;
+                    
+                    if(x === 0 && y === 0) {
+                        cell.classList.add('robot');
+                    }
+                    
+                    if((x === 2 && y === 2) || (x === 3 && y === 3) || (x === 4 && y === 4)) {
+                        cell.classList.add('obstacle');
+                    }
+                    
+                    grid.appendChild(cell);
+                }
+            }
+        }
+
+        function updateGrid(x, y) {
+            document.querySelectorAll('.robot').forEach(c => c.classList.remove('robot'));
+            document.getElementById(`cell-${x}-${y}`).classList.add('robot');
+        }
+
+        async function sendCommand() {
+            const command = document.getElementById('commandInput').value;
+            const button = document.querySelector('.glow-button');
+            button.disabled = true;
+            button.textContent = 'SENDING...';
+            
+            try {
+                const response = await fetch('/command', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({command: command})
+                });
+                
+                const result = await response.json();
+                document.getElementById('status').innerText = 
+                    result.status === 'success' 
+                    ? `SUCCESS: Robot moved to (${result.position[0]}, ${result.position[1]})` 
+                    : 'ERROR: Command failed';
+                
+                if(result.position) {
+                    robotPos = result.position;
+                    updateGrid(robotPos[0], robotPos[1]);
+                    document.getElementById('batteryLevel').textContent = result.battery;
+                }
+            } catch (error) {
+                document.getElementById('status').innerText = 'NETWORK ERROR';
+            } finally {
+                button.disabled = false;
+                button.textContent = 'TRANSMIT';
+            }
+        }
+
+        function startGame() {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+            createGrid();
+        }
+    </script>
+</body>
+</html>
